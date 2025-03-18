@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Upload and Display</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    #container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    img {
+      max-width: 300px;
+      border-radius: 8px;
+    }
+    input {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Welcome!</h1>
+    <div id="imageContainer"></div>
+    <input type="file" id="imageUpload" accept="image/*" />
+  </div>
+
+  <script>
+    // Check if an image exists in localStorage
+    const savedImage = localStorage.getItem('uploadedImage');
+    const imageContainer = document.getElementById('imageContainer');
+    const imageUpload = document.getElementById('imageUpload');
+
+    if (savedImage) {
+      // If image is available, display it
+      const img = document.createElement('img');
+      img.src = savedImage;
+      imageContainer.appendChild(img);
+      imageUpload.style.display = 'none'; // Hide the input
+    } else {
+      // If no image is available, allow upload
+      imageUpload.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            localStorage.setItem('uploadedImage', e.target.result);
+            location.reload(); // Refresh to display the image
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
