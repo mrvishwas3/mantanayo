@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Upload and Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e3f2fd;
+        }
+
+        #container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 350px;
+        }
+
+        #imageFrame {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            border: 3px solid #1976d2;
+            border-radius: 12px;
+            background: #fff;
+            margin-top: 20px;
+        }
+
+        img {
+            max-width: 250px;
+            border-radius: 8px;
+        }
+
+        .caption {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 18px;
+        }
+
+        input {
+            margin-top: 20px;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #1976d2;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1>Welcome!</h1>
+        <div id="imageFrame">
+            <div id="imageContainer"></div>
+            <div class="caption">SMVITM</div>
+        </div>
+.        <input type="file" id="imageUpload" accept="image/*" />
+    </div>
+
+    <script>
+        const savedImage = localStorage.getItem('uploadedImage');
+        const imageContainer = document.getElementById('imageContainer');
+        const imageUpload = document.getElementById('imageUpload');
+
+        if (savedImage) {
+            const img = document.createElement('img');
+            img.src = savedImage;
+            imageContainer.appendChild(img);
+            imageUpload.style.display = 'none';
+        } else {
+            imageUpload.addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        localStorage.setItem('uploadedImage', e.target.result);
+                        location.reload();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
